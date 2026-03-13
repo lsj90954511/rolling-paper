@@ -22,7 +22,7 @@ export const letter = mysqlTable('letter', {
 export const banner = mysqlTable('banner', {
   rollingPaperId: bigint('rolling_paper_id', { mode: 'number' }).primaryKey(),
   imageUrl: varchar('image_url', { length: 500 }),
-  content: varchar('content', { length: 500 }),
+  comment: varchar('comment', { length: 500 }),
 });
 
 //연관관계 정의
