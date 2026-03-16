@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import { Align } from '@/lib/enums';
 
@@ -24,35 +24,14 @@ interface Props {
 }
 
 export default function LetterDetailPage({ data, targetLetterId }: Props) {
-  const lastScrollY = useRef(0);
   const targetRef = useRef<HTMLDivElement>(null);
-  const [headerVisible, setHeaderVisible] = useState(true);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (targetRef.current) {
-      targetRef.current.scrollIntoView({ block: 'center' });
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-        const y = window.scrollY;
-        const down = y > lastScrollY.current && y > 10;
-        if (down) {
-        setHeaderVisible(false);
-        }
-        if (scrollTimer.current) clearTimeout(scrollTimer.current);
-        scrollTimer.current = setTimeout(() => {
-        setHeaderVisible(true);
-        }, 1000);
-        lastScrollY.current = y;
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-        window.removeEventListener('scroll', handleScroll);
-        if (scrollTimer.current) clearTimeout(scrollTimer.current);
-    };
+    setTimeout(() => {
+      if (targetRef.current) {
+        targetRef.current.scrollIntoView({ block: 'center' });
+      }
+    }, 100);
   }, []);
 
   return (
@@ -117,12 +96,11 @@ export default function LetterDetailPage({ data, targetLetterId }: Props) {
         }
       `}</style>
 
+      <Header title={data.title} showBack={true} />
+
       <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
         <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: '100%', maxWidth: 620, padding: '0 16px' }}>
-
-            <Header title={data.title} showBack={true} hidden={!headerVisible}/>
-
+          <div style={{ width: '100%', maxWidth: 620, padding: '0 16px', paddingTop: 52 }}>
             <div className="letter-list">
               {data.letters.map((letter) => {
                 const isTarget = letter.letterId === targetLetterId;
@@ -154,7 +132,6 @@ export default function LetterDetailPage({ data, targetLetterId }: Props) {
                 );
               })}
             </div>
-
           </div>
         </main>
       </div>

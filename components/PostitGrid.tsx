@@ -55,7 +55,7 @@ export default function PostitGrid() {
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(0,0,0,0.75)', lineHeight: 1.4 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(0,0,0,0.75)', lineHeight: 1.4, textAlign: 'center' }}>
                 {paper.title}
               </div>
             </div>

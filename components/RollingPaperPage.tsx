@@ -13,7 +13,7 @@ interface Letter {
   content: string;
   color: string;
   imgUrl: string | null;
-  align: Align  | null;
+  align: Align | null;
 }
 
 interface RollingPaperData {
@@ -30,13 +30,11 @@ const ROTATIONS = [-3, 1.5, 2.5, -1.5, 2, -2.5, 1, -1, 3, -2];
 
 export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
   const router = useRouter();
-  const lastScrollY = useRef(0);
-  const mainRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollY = useRef(0);
 
-  const [headerVisible, setHeaderVisible] = useState(true);
   const [bannerVisible, setBannerVisible] = useState(true);
   const [bannerPos, setBannerPos] = useState<{ left: number; width: number } | null>(null);
   const [bannerHeight, setBannerHeight] = useState(0);
@@ -55,23 +53,17 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
 
   useEffect(() => {
     const handleScroll = () => {
-        const y = window.scrollY;
-        const down = y > lastScrollY.current && y > 10;
-        if (down) {
-            setHeaderVisible(false);
-            setBannerVisible(false);
-        }
-        if (scrollTimer.current) clearTimeout(scrollTimer.current);
-        scrollTimer.current = setTimeout(() => {
-            setHeaderVisible(true);
-            setBannerVisible(true);
-        }, 1000);
-        lastScrollY.current = y;
+      const y = window.scrollY;
+      const down = y > lastScrollY.current && y > 10;
+      if (down) setBannerVisible(false);
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+      scrollTimer.current = setTimeout(() => setBannerVisible(true), 1000);
+      lastScrollY.current = y;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-        window.removeEventListener('scroll', handleScroll);
-        if (scrollTimer.current) clearTimeout(scrollTimer.current);
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
     };
   }, []);
 
@@ -85,7 +77,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
   }, [bannerPos]);
 
   const bannerMeta = data.banner ? BANNERS.find(b => b.src === data.banner!.imageUrl) : null;
-  const namePosition = bannerMeta?.detailNamePosition ?? { bottom: '5%', left: '50%', transform: 'translateX(-50%)' };
+  const namePosition = bannerMeta?.namePosition ?? { bottom: '5%', left: '50%', transform: 'translateX(-50%)' };
 
   return (
     <>
@@ -97,8 +89,15 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
         .masonry {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
+          grid-auto-rows: min-content;
           gap: 10px;
-          padding: 16px 8px;
+          padding: 25px 18px;
+          border: 1.5px solid #e8e8e8;
+          border-radius: 16px;
+          box-shadow: 2px 4px 16px rgba(0,0,0,0.06);
+          background: #fff;
+          min-height: calc(100vh - 120px);
+          align-items: start;
         }
 
         .letter-card {
@@ -171,16 +170,12 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
         }
       `}</style>
 
+      <Header title={data.title} showBack={true} />
+
       <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
         {modalOpen && <WriteLetterModal rollingPaperId={data.rollingPaperId} onClose={() => setModalOpen(false)} />}
-        <main
-          ref={mainRef}
-          style={{ flex: 1, display: 'flex', justifyContent: 'center' }}
-        >
-          <div ref={containerRef} style={{ width: '100%', maxWidth: 620, padding: '0 16px' }}>
-
-            {/* 헤더 */}
-            <Header title={data.title} showBack={true} hidden={!headerVisible} />
+        <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+          <div ref={containerRef} style={{ width: '100%', maxWidth: 620, padding: '0 16px', paddingTop: 52 }}>
 
             {/* 편지 그리드 */}
             <div className="masonry" style={{ paddingBottom: data.banner ? bannerHeight + 20 : 20 }}>
@@ -223,7 +218,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
                 <span style={{
                   position: 'absolute',
                   ...namePosition,
-                  fontSize: 13, fontWeight: 800, color: '#111',
+                  fontSize: 'clamp(9px, 2.5vw, 13px)', fontWeight: 800, color: '#111',
                   whiteSpace: 'nowrap',
                 }}>
                   {data.banner.comment}

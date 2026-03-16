@@ -1,5 +1,4 @@
 'use client';
-import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import PostitGrid from '@/components/PostitGrid';
 import { useState } from 'react';
@@ -12,9 +11,10 @@ export default function Home() {
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
       {modalOpen && <CreateRollingPaperModal onClose={() => setModalOpen(false)} />}
 
+      <Header title="홈" />
+
       <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: 620, padding: '0 16px 80px' }}>
-          <Header />
+        <div style={{ width: '100%', maxWidth: 620, padding: '0 16px 80px', paddingTop: 52 }}>
 
           {/* 히어로 */}
           <div style={{ background: '#fff', borderRadius: 18, padding: 20, marginBottom: 16, border: '1px solid #e8e8e8' }}>

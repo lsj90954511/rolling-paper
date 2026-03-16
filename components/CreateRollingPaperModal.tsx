@@ -125,7 +125,7 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
               onChange={e => setComment(e.target.value)}
               style={inputStyle}
             />
-            <span style={{ fontSize: 12, color: '#bbb', alignSelf: 'flex-end' }}>{title.length}/500</span>
+            <span style={{ fontSize: 12, color: '#bbb', alignSelf: 'flex-end' }}>{comment.length}/500</span>
           </div>
         </div>
 
@@ -161,7 +161,7 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
                       display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
                     }}>
                     <span style={{
-                        fontSize: 12,
+                        fontSize: 'clamp(9px, 2.5vw, 12px)',
                         fontWeight: 800,
                         color: '#111',
                         letterSpacing: 1,
@@ -182,7 +182,7 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
                       display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
                     }}>
                     <span style={{
-                      fontSize: 12,
+                      fontSize: 'clamp(9px, 2.5vw, 12px)',
                       color: 'rgba(255,255,255,0.7)',
                       background: 'rgba(0,0,0,0.2)',
                       padding: '4px 14px',

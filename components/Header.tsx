@@ -1,32 +1,52 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   title?: string;
   showBack?: boolean;
-  hidden?: boolean;
 }
 
-export default function Header({ title = '홈', showBack = false, hidden = false }: Props) {
-    const router = useRouter();
+export default function Header({ title = '홈', showBack = false }: Props) {
+  const router = useRouter();
+  const lastY = useRef(0);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      const down = y > lastY.current && y > 10;
+      if (down) setHidden(true);
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+      scrollTimer.current = setTimeout(() => setHidden(false), 1000);
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+    };
+  }, []);
 
   return (
     <header style={{
-      position: 'sticky', top: 0, zIndex: 50,
-      background: '#f4f4f0',
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+      background: 'rgba(244,244,240,0.7)',
+      backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '14px 0',
+      padding: '14px 20px',
       transition: 'transform 0.3s ease, opacity 0.3s ease',
       transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
       opacity: hidden ? 0 : 1,
       pointerEvents: hidden ? 'none' : 'auto',
     }}>
-        {showBack ? (
+      {showBack ? (
         <button style={btnStyle} onClick={() => router.back()}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-      </button>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
       ) : (
         <div style={{ width: 36 }} />
       )}
