@@ -1,5 +1,6 @@
 import { mysqlTable, varchar, timestamp, text, serial, bigint } from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
+import { Align } from '@/lib/enums';
 
 //테이블 정의
 export const rollingPaper = mysqlTable('rolling_paper', {
@@ -17,6 +18,7 @@ export const letter = mysqlTable('letter', {
   color: varchar('color', { length: 20 }),
   imgUrl: varchar('img_url', { length: 500 }),
   createdAt: timestamp('created_at').defaultNow(),
+  align: varchar('align', { length: 10 }).default(Align.LEFT),
 });
 
 export const banner = mysqlTable('banner', {

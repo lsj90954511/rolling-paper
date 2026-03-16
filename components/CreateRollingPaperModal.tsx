@@ -2,18 +2,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { BANNERS } from '@/lib/banners';
  
 interface Props {
   onClose: () => void;
 }
-
-const banners = [
-  { id: 0, src: null, label: '선택 안함' },
-  { id: 1, src: '/banners/banner1.png', label: '생일축하1', namePosition: {bottom: '2%', left: '50%', transform: 'translateX(-50%)'} },
-  { id: 2, src: '/banners/banner2.png', label: '생일축하2', namePosition: {bottom: '19%', left: '50%', transform: 'translateX(-50%)'} },
-  { id: 3, src: '/banners/banner3.png', label: '생일축하3', namePosition: {bottom: '19%', left: '50%', transform: 'translateX(-50%)'} },
-  { id: 4, src: '/banners/banner4.png', label: '생일축하4', namePosition: {bottom: '32%', left: '50%', transform: 'translateX(-50%)'} }
-];
  
 export default function CreateRollingPaperModal({ onClose }: Props) {
   const router = useRouter();
@@ -23,8 +16,8 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
   const [comment, setComment] = useState('');
   const [bannerIndex, setBannerIndex] = useState(0);
  
-  const prevBanner = () => setBannerIndex(i => (i - 1 + banners.length) % banners.length);
-  const nextBanner = () => setBannerIndex(i => (i + 1) % banners.length);
+  const prevBanner = () => setBannerIndex(i => (i - 1 + BANNERS.length) % BANNERS.length);
+  const nextBanner = () => setBannerIndex(i => (i + 1) % BANNERS.length);
  
   const handleSubmit = async () => {
     if (!title.trim()) return alert('제목을 입력해주세요!');
@@ -34,11 +27,11 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-        title,
-        password,
-        comment,
-        bannerId: banners[bannerIndex].id,
-        bannerSrc: banners[bannerIndex].src,
+            title,
+            password,
+            comment,
+            bannerId: BANNERS[bannerIndex].id,
+            bannerSrc: BANNERS[bannerIndex].src,
         }),
     });
 
@@ -127,7 +120,7 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
             <input
               type="text"
               placeholder="이번달 생일자의 이름을 적어요."
-              maxLength={20}
+              maxLength={500}
               value={comment}
               onChange={e => setComment(e.target.value)}
               style={inputStyle}
@@ -154,26 +147,27 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
               borderRadius: 16, overflow: 'hidden',
               boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
               position: 'relative',
-              background: banners[bannerIndex].src ? 'transparent' : '#f4f4f0',  // 추가
+              background: BANNERS[bannerIndex].src ? 'transparent' : '#f4f4f0',  // 추가
             }}>
               {/* 배경 이미지 */}
-              {banners[bannerIndex].src ? (
+              {BANNERS[bannerIndex].src ? (
                   <>
-                  <Image src={banners[bannerIndex].src} alt={banners[bannerIndex].label} fill style={{ objectFit: 'cover' }} />
+                  <Image src={BANNERS[bannerIndex].src} alt={BANNERS[bannerIndex].label} fill style={{ objectFit: 'cover' }} />
                   {/* 이름 오버레이 */}
                   {comment && (
                     <div style={{
                       position: 'absolute', inset: 0,
-                      ...banners[bannerIndex].namePosition,
+                      ...BANNERS[bannerIndex].namePosition,
                       display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
                     }}>
                     <span style={{
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: 800,
                         color: '#111',
                         letterSpacing: 1,
                         padding: '4px 16px',
                         borderRadius: 20,
+                        whiteSpace: 'nowrap',
                     }}>
                       {comment}
                     </span>
@@ -184,11 +178,11 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
                   {!comment && (
                     <div style={{
                       position: 'absolute', inset: 0,
-                      ...banners[bannerIndex].namePosition,
+                      ...BANNERS[bannerIndex].namePosition,
                       display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
                     }}>
                     <span style={{
-                      fontSize: 13,
+                      fontSize: 12,
                       color: 'rgba(255,255,255,0.7)',
                       background: 'rgba(0,0,0,0.2)',
                       padding: '4px 14px',
@@ -221,7 +215,7 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
  
           {/* 인디케이터 */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 12 }}>
-            {banners.map((_, i) => (
+            {BANNERS.map((_, i) => (
               <div key={i} onClick={() => setBannerIndex(i)} style={{
                 width: i === bannerIndex ? 20 : 6, height: 6,
                 borderRadius: 3,
@@ -231,7 +225,7 @@ export default function CreateRollingPaperModal({ onClose }: Props) {
             ))}
           </div>
           <div style={{ textAlign: 'center', fontSize: 12, color: '#aaa', marginTop: 8 }}>
-            {banners[bannerIndex].label} ({bannerIndex + 1}/{banners.length})
+            {BANNERS[bannerIndex].label} ({bannerIndex + 1}/{BANNERS.length})
           </div>
         </div>
  
