@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import { BANNERS } from '@/lib/banners';
 import { Align } from '@/lib/enums';
+import { useRouter } from 'next/navigation';
 import WriteLetterModal from '@/components/WriteLetterModal';
 
 interface Letter {
@@ -28,6 +29,7 @@ interface RollingPaperData {
 const ROTATIONS = [-3, 1.5, 2.5, -1.5, 2, -2.5, 1, -1, 3, -2];
 
 export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
+  const router = useRouter();
   const lastScrollY = useRef(0);
   const mainRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,29 +54,24 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
   }, []);
 
   useEffect(() => {
-    const el = mainRef.current;
-    if (!el) return;
     const handleScroll = () => {
-      const y = el.scrollTop;
-      const down = y > lastScrollY.current && y > 10;
-
-      if (down) {
-        setHeaderVisible(false);
-        setBannerVisible(false);
-      }
-
-      if (scrollTimer.current) clearTimeout(scrollTimer.current);
-      scrollTimer.current = setTimeout(() => {
-        setHeaderVisible(true);
-        setBannerVisible(true);
-      }, 1000);
-
-      lastScrollY.current = y;
+        const y = window.scrollY;
+        const down = y > lastScrollY.current && y > 10;
+        if (down) {
+            setHeaderVisible(false);
+            setBannerVisible(false);
+        }
+        if (scrollTimer.current) clearTimeout(scrollTimer.current);
+        scrollTimer.current = setTimeout(() => {
+            setHeaderVisible(true);
+            setBannerVisible(true);
+        }, 1000);
+        lastScrollY.current = y;
     };
-    el.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      el.removeEventListener('scroll', handleScroll);
-      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+        window.removeEventListener('scroll', handleScroll);
+        if (scrollTimer.current) clearTimeout(scrollTimer.current);
     };
   }, []);
 
@@ -101,7 +98,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 10px;
-          padding: 16px 0;
+          padding: 16px 8px;
         }
 
         .letter-card {
@@ -178,12 +175,12 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
         {modalOpen && <WriteLetterModal rollingPaperId={data.rollingPaperId} onClose={() => setModalOpen(false)} />}
         <main
           ref={mainRef}
-          style={{ flex: 1, display: 'flex', justifyContent: 'center', overflowY: 'auto', height: '100vh' }}
+          style={{ flex: 1, display: 'flex', justifyContent: 'center' }}
         >
           <div ref={containerRef} style={{ width: '100%', maxWidth: 620, padding: '0 16px' }}>
 
             {/* 헤더 */}
-            <Header title={data.title} showSearch={false} hidden={!headerVisible} />
+            <Header title={data.title} showBack={true} hidden={!headerVisible} />
 
             {/* 편지 그리드 */}
             <div className="masonry" style={{ paddingBottom: data.banner ? bannerHeight + 20 : 20 }}>
@@ -197,6 +194,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
                       : letter.color || '#ffffff',
                     transform: `rotate(${ROTATIONS[i % ROTATIONS.length]}deg)`,
                   }}
+                  onClick={() => router.push(`/${data.rollingPaperId}/${letter.letterId}`)}
                 >
                   <div className="letter-nickname">From. {letter.nickname}</div>
                   <div className="letter-content" style={{ textAlign: letter.align || Align.LEFT }}>{letter.content}</div>

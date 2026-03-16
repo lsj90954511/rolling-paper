@@ -12,7 +12,7 @@ export default function Home() {
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
       {modalOpen && <CreateRollingPaperModal onClose={() => setModalOpen(false)} />}
 
-      <main style={{ marginLeft: 72, flex: 1, display: 'flex', justifyContent: 'center' }}>
+      <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 620, padding: '0 16px 80px' }}>
           <Header />
 
