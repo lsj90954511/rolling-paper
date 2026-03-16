@@ -77,7 +77,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
   }, [bannerPos]);
 
   const bannerMeta = data.banner ? BANNERS.find(b => b.src === data.banner!.imageUrl) : null;
-  const namePosition = bannerMeta?.namePosition ?? { bottom: '5%', left: '50%', transform: 'translateX(-50%)' };
+  const namePosition = bannerMeta?.detailNamePosition ?? { bottom: '5%', left: '50%', transform: 'translateX(-50%)' };
 
   return (
     <>
