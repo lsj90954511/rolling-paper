@@ -98,6 +98,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
           background: #fff;
           min-height: calc(100vh - 120px);
           align-items: start;
+          margin: 16px 0px;
         }
 
         .letter-card {
