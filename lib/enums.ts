@@ -1,7 +1,12 @@
-export const Align = {
-  LEFT: 'left',
-  CENTER: 'center',
-  RIGHT: 'right',
-} as const;
+export enum Align {
+  LEFT = 'left',
+  CENTER = 'center',
+  RIGHT = 'right',
+}
 
-export type Align = typeof Align[keyof typeof Align];
+export enum Effect {
+  NONE = 'none',
+  SNOW = 'snow',
+  STAR = 'star',
+  HEART = 'heart',
+}

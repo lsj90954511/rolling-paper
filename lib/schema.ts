@@ -7,6 +7,9 @@ export const rollingPaper = mysqlTable('rolling_paper', {
   rollingPaperId: serial('rolling_paper_id').primaryKey(),
   title: varchar('title', { length: 20 }),
   password: varchar('password', { length: 500 }).notNull(),
+  bgColor: varchar('bg_color', { length: 20 }),
+  bgImgUrl: varchar('bg_img_url', { length: 500 }),
+  effect: varchar('effect', { length: 20 }),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

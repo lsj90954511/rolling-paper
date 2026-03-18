@@ -260,17 +260,17 @@ export default function WriteLetterModal({ rollingPaperId, onClose }: Props) {
           {/* 툴바 */}
           <div className="wl-toolbar">
             {/* 정렬 버튼 */}
-            <button className={`wl-align-btn ${align === 'left' ? 'active' : ''}`} onClick={() => setAlign('left')}>
+            <button className={`wl-align-btn ${align === 'left' ? 'active' : ''}`} onClick={() => setAlign(Align.LEFT)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/>
               </svg>
             </button>
-            <button className={`wl-align-btn ${align === 'center' ? 'active' : ''}`} onClick={() => setAlign('center')}>
+            <button className={`wl-align-btn ${align === 'center' ? 'active' : ''}`} onClick={() => setAlign(Align.CENTER)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
               </svg>
             </button>
-            <button className={`wl-align-btn ${align === 'right' ? 'active' : ''}`} onClick={() => setAlign('right')}>
+            <button className={`wl-align-btn ${align === 'right' ? 'active' : ''}`} onClick={() => setAlign(Align.RIGHT)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="6" y1="18" x2="21" y2="18"/>
               </svg>

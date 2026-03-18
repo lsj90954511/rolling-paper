@@ -8,14 +8,22 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
+    <div className='background' style={{ display: 'flex', minHeight: '100vh' }}>
       {modalOpen && <CreateRollingPaperModal onClose={() => setModalOpen(false)} />}
 
       <Header title="홈" />
 
-      <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: 620, padding: '0 16px 80px', paddingTop: 52 }}>
-
+      <main className='background' style={{ flex: 1, display: 'flex', justifyContent: 'center', border: '2px'}}>
+        <div style={{ 
+          marginTop: '50px',
+          width: '100%', 
+          maxWidth: 620, 
+          padding: '16px 16px 80px',  
+          boxSizing: 'border-box',
+          border: '1.5px solid #e8e8e8',
+          borderRadius: 16,
+          boxShadow: '2px 4px 16px rgba(0,0,0,0.06)', 
+        }}>
           {/* 히어로 */}
           <div style={{ background: '#fff', borderRadius: 18, padding: 20, marginBottom: 16, border: '1px solid #e8e8e8' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>

@@ -1,5 +1,5 @@
 :root {
-  --background: #f4f4f0;
+  --background: #fafcff;
   --foreground: #171717;
   --white: #ffffff;
   --primary: #4a7cff;
@@ -24,4 +24,8 @@ body {
   transform: translateY(-6px) rotate(0deg) !important;
   box-shadow: 4px 8px 24px rgba(0,0,0,0.18) !important;
   z-index: 10;
+}
+
+.background {
+  background: #fafcff;
 }

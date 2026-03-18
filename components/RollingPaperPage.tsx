@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import { BANNERS } from '@/lib/banners';
-import { Align } from '@/lib/enums';
+import { Align, Effect } from '@/lib/enums';
 import { useRouter } from 'next/navigation';
 import WriteLetterModal from '@/components/WriteLetterModal';
+import ParticleEffect from '@/components/ParticleEffect';
 
 interface Letter {
   letterId: number;
@@ -19,6 +20,9 @@ interface Letter {
 interface RollingPaperData {
   rollingPaperId: number;
   title: string;
+  bgColor: string | null;
+  bgImgUrl: string | null;
+  effect: Effect | null;
   banner: {
     imageUrl: string;
     comment: string;
@@ -98,7 +102,7 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
           background: #fff;
           min-height: calc(100vh - 120px);
           align-items: start;
-          margin: 16px 0px;
+          margin-top: 16px;
         }
 
         .letter-card {
@@ -172,14 +176,20 @@ export default function RollingPaperPage({ data }: { data: RollingPaperData }) {
       `}</style>
 
       <Header title={data.title} showBack={true} />
+      <ParticleEffect effect={data.effect} />
 
-      <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
+      <div className='background' style={{ display: 'flex', minHeight: '100vh' }}>
         {modalOpen && <WriteLetterModal rollingPaperId={data.rollingPaperId} onClose={() => setModalOpen(false)} />}
         <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
           <div ref={containerRef} style={{ width: '100%', maxWidth: 620, padding: '0 16px', paddingTop: 52 }}>
 
             {/* 편지 그리드 */}
-            <div className="masonry" style={{ paddingBottom: data.banner ? bannerHeight + 20 : 20 }}>
+            <div className="masonry" style={{ 
+              background: data.bgImgUrl
+                ? `url(${data.bgImgUrl}) center/cover no-repeat`
+                : data.bgColor || '#fff',
+              paddingBottom: data.banner ? bannerHeight + 20 : 20
+            }}>
               {data.letters.map((letter, i) => (
                 <div
                   key={letter.letterId}

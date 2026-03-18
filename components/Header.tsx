@@ -31,13 +31,14 @@ export default function Header({ title = '홈', showBack = false }: Props) {
 
   return (
     <header style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-      background: 'rgba(244,244,240,0.7)',
+      position: 'fixed', top: 0, left: '50%', zIndex: 50,
+      transform: hidden ? 'translateY(-100%) translateX(-50%)' : 'translateY(0) translateX(-50%)',
+      width: '100%', maxWidth: 620,
+      background: 'rgba(250,252,255,0.7)',
       backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '14px 20px',
+      padding: '14px 0px',
       transition: 'transform 0.3s ease, opacity 0.3s ease',
-      transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
       opacity: hidden ? 0 : 1,
       pointerEvents: hidden ? 'none' : 'auto',
     }}>

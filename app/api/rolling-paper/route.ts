@@ -4,22 +4,25 @@ import { rollingPaper, banner, letter } from '@/lib/schema';
 import { eq } from 'drizzle-orm';
 
 export async function POST(req: NextRequest) {
-  const { title, password, comment, bannerId, bannerSrc } = await req.json();
+  const { title, password, comment, bannerId, bannerSrc, bgColor, bgImgUrl, effect } = await req.json();
 
   const [newPaper] = await db.insert(rollingPaper).values({
     title,
     password,
+    bgColor,
+    bgImgUrl,
+    effect,
   }).$returningId();
 
-  if (bannerId !== 0) {
-    await db.insert(banner).values({
-      rollingPaperId: newPaper.rollingPaperId,
-      comment: comment,
-      imageUrl: bannerSrc,
-    });
-  }
+    if (bannerId !== 0) {
+      await db.insert(banner).values({
+        rollingPaperId: newPaper.rollingPaperId,
+        comment: comment,
+        imageUrl: bannerSrc,
+      });
+    }
 
-  return NextResponse.json({ id: newPaper.rollingPaperId });
+    return NextResponse.json({ id: newPaper.rollingPaperId });
 }
 
 export async function GET(req: NextRequest) {

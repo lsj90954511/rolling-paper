@@ -98,7 +98,7 @@ export default function LetterDetailPage({ data, targetLetterId }: Props) {
 
       <Header title={data.title} showBack={true} />
 
-      <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f4f0' }}>
+      <div className='background' style={{ display: 'flex', minHeight: '100vh' }}>
         <main style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
           <div style={{ width: '100%', maxWidth: 620, padding: '0 16px', paddingTop: 52 }}>
             <div className="letter-list">
